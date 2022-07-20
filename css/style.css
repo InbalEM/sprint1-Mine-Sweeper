@@ -2,7 +2,6 @@ body {
     background-color: black;
     color: white;
     text-align: center;
-
 }
 
 h1 {
@@ -10,11 +9,9 @@ h1 {
     color: beige;
 }
 .sweeper{
-    /* background: none; */
     width: 40px;
     height: 40px;
     background-color: gray;
-
 }
 
 table{
@@ -24,39 +21,14 @@ table{
 .clock{
     margin-left: 30%;
 }
-/* .score{
-    margin-right: y;
-    
-} */
-
-/* table{
-    transition: all .5s;
-    text-align: center
-    
-} */
-
 
 .board{
-    /* align-self: auto; */
-    /* margin-left: auto;
-    margin-right: auto; */
     text-align: center;
-    /* box-shadow: 5px 4px 30px ; */
+
 }
 
-
-/* 
-.mine-sweeper {
-    margin-left: auto;
-    margin-right: auto;
-} */
-
 td{
-
-    
-    
     background-color: gray;
-    
     width: 40px;
     height: 40px;
     text-align: center;
@@ -65,8 +37,6 @@ td{
 tr {
     border-radius: 10px 10px 0 0;
 }
-
-
 
 .clicked {
     background-color: rgb(62, 62, 62);
