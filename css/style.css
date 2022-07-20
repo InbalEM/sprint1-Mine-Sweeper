@@ -1,0 +1,40 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+h1 {
+    color: beige;
+}
+
+
+.clock{
+    margin-left: 30%;
+}
+
+.board{
+    text-align: center;
+}
+
+td{
+    background-color: gray;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.4em;
+} 
+
+tr {
+    border-radius: 10px 10px 0 0;
+}
+
+.clicked {
+    background-color: rgb(62, 62, 62);
+    color: black;   
+}
+
+.board td:hover {
+    background-color: rgba(139, 151, 246, 0.532);
+}
+
+
