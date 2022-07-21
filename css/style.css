@@ -35,6 +35,9 @@ table {
 .board {
     text-align: center;
 }
+div{
+    margin-top: 20px;
+}
 
 td {
     background-color: gray;
