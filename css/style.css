@@ -5,35 +5,42 @@ body {
 }
 
 h1 {
-
     color: beige;
 }
-.sweeper{
-    width: 40px;
-    height: 40px;
-    background-color: gray;
+
+span.lives {
+    margin-right: 25px;
 }
 
-table{
+button.hints {
+    margin-right: 10px;
+    background: none;
+    color: aliceblue;
+}
+
+.sweeper {
+    background: none;
+    width: 50px;
+    height: 50px;
+    font-size: 40px
+}
+
+table {
     margin: auto;
-
-}
-.clock{
-    margin-left: 30%;
 }
 
-.board{
+.board {
     text-align: center;
-
 }
 
-td{
+td {
     background-color: gray;
     width: 40px;
     height: 40px;
     text-align: center;
     font-size: 1.4em;
-} 
+}
+
 tr {
     border-radius: 10px 10px 0 0;
 }
@@ -41,11 +48,14 @@ tr {
 .clicked {
     background-color: rgb(62, 62, 62);
     color: black;
-    
 }
 
 .board td:hover {
     background-color: rgba(139, 151, 246, 0.532);
 }
 
-
+.footer {
+    background-color: rgba(42, 41, 41, 0.921);
+    padding: 20px;
+    margin-top: 80px;
+}

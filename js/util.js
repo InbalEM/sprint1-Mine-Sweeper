@@ -1,14 +1,9 @@
 'use strict'
 
 const MINE = '💣'
-const NUM1 = '1️⃣'
-const NUM2 = '2️⃣'
-const NUM3 = '3️⃣'
 const MARKED = '🏁'
 
-
 function renderBoard(board) {
-
     var strHTML = '';
     for (var i = 0; i < board.length; i++) {
         strHTML += '<tr>\n';
@@ -16,15 +11,13 @@ function renderBoard(board) {
             var tdId = `cell-${i}-${j}`;
             var currCell = board[i][j];
             var className = (currCell.isShown) ? 'clicked' : ''
-
             strHTML += `\t<td  id="${tdId}" class="${className}"  onclick="cellClicked(this,${i}, ${j})" 
-                        oncontextmenu="cellMarked(this,event);return false;">\n`;
+                        oncontextmenu="cellMarked(this);return false;">\n`;
             if (currCell.isMarked) {
                 strHTML += MARKED
             } else if (currCell.isShown) {
                 if (currCell.isMine) {
                     strHTML += MINE
-
                 } else if (currCell.minesAroundCount > 0) {
                     strHTML += currCell.minesAroundCount
                 }
@@ -33,9 +26,14 @@ function renderBoard(board) {
         }
         strHTML += '</tr>\n';
     }
-
     var elBoard = document.querySelector('.board');
     elBoard.innerHTML = strHTML;
+}
+
+function renderCell(idxI, idxJ, value, className) {
+    const elCell = document.getElementById(`cell-${idxI}-${idxJ}`)
+    elCell.innerHTML = value
+    elCell.classList.add(`${className}`)
 }
 
 function countMineNegs(board, rowIdx, colIdx) {
@@ -67,29 +65,68 @@ function getRandomInt(min, max) {
     return randNum
 }
 
-function createArray(boardSize,idxI,idxJ) {
+function createArray(boardSize, idxI, idxJ) {
     var cells = []
     for (var i = 0; i < boardSize; i++) {
-
         for (var j = 0; j < boardSize; j++) {
             if (i === idxI && j === idxJ) continue
-        
             cells.push({ i: i, j: j })
         }
     }
     return cells
 }
 
-
-function expandShown( rowIdx, colIdx) {
+function expandShown(elCell, rowIdx, colIdx) {
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
             if (j < 0 || j >= gBoard[0].length) continue
-            var Cell = gBoard[i][j]
-            Cell.isShown=true
+            if (i === rowIdx && colIdx === j) continue
+            var cellCoord = getCellCoord(elCell.id);
+            if (cellCoord.i === i && cellCoord.j === j) continue
+            var cell = gBoard[i][j]
+            if (cell.isShown || cell.isMarked || cell.isMine) continue
+            cell.isShown = true
             gGame.shownCount++
+            if (cell.minesAroundCount === 0) expandShown(elCell, i, j)
         }
     }
+}
 
+function cellHint(rowIdx, colIdx) {
+    var shownCells = []
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= gBoard.length) continue
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+            if (j < 0 || j >= gBoard[0].length) continue
+            var cell = gBoard[i][j]
+            if (cell.isShown || cell.isMarked) continue
+            cell.isShown = true
+            shownCells.push({ i: i, j: j })
+        }
+    }
+    renderBoard(gBoard)
+    return shownCells
+}
+
+function hideCells(shownCells) {
+    for (var i = 0; i < shownCells.length; i++) {
+        var cell = gBoard[shownCells[i].i][shownCells[i].j]
+        cell.isShown = false
+    }
+    renderBoard(gBoard)
+}
+
+function cellToDraw(board) {
+    var drawBoard = []
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            if (board[i][j].isMine) continue
+            if (board[i][j].isShown) continue
+            if (board[i][j].isMarked) continue
+            var Cell = board[i][j]
+            drawBoard.push({ i, j })
+        }
+    }
+    return drawBoard
 }

@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href="css/style.css">
-    
-    <title>Mine Sweeper</title>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="css/style.css">
+  <title>Mine Sweeper</title>
 </head>
+
 <body onload="init()">
   <h1>Mine Sweeper!!!</h1>
-  <button class = "sweeper" onclick="resetGame()">😁</button>
-  <p>
-    <span class="clock">000</span>
-  </p>
-  <p >Lives: <span class = 'lives'>0</span> </p>
 
-  <table >
+  <button class="sweeper" onclick="resetGame()">😁</button>
+  <div>
+    <button class='hints' onclick="hint()">HINTS : <span class='hints'>💡💡💡</span></button>
+    <span class='lives'>❤️❤️❤️</span>
+    <br>
+    Timer: <span class="clock">000</span>
+  </div>
+  <p class='score'></p>
+
+  <table>
     <tbody class="board"></tbody>
   </table>
-<br>
+
+  <br>
   <button data-level="0" onclick="levelUpdate(this)">Level 1</button>
   <button data-level="1" onclick="levelUpdate(this)">Level 2</button>
   <button data-level="2" onclick="levelUpdate(this)">Level 3</button>
-    <script src="js/util.js"></script> 
+  <br><br>
+  <button onclick="safeClick()">Safe Click: <span class='safe-click'>3</span></button>
+  <div class="footer">Inbal Moshe</div>
+
+  <script src="js/util.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
