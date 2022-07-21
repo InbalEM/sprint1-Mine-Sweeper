@@ -3,7 +3,7 @@
 const LIVE = '😁'
 const SAD = '😵'
 const WIN = '😎'
-var gLevels = [{ SIZE: 4, MINES: 2 }, { SIZE: 8, MINES: 2 }, { SIZE: 12, MINES: 30 }]
+var gLevels = [{ SIZE: 4, MINES: 2 }, { SIZE: 8, MINES: 12 }, { SIZE: 12, MINES: 30 }]
 var gBoard
 var gGameLevel = 0
 
