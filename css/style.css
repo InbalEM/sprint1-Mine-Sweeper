@@ -11,6 +11,9 @@ h1 {
 span.lives {
     margin-right: 25px;
 }
+span.clock{
+    margin: auto;
+}
 
 button.hints {
     margin-right: 10px;
