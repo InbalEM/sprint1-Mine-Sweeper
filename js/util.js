@@ -76,8 +76,8 @@ function createArray(boardSize, idxI, idxJ) {
     return cells
 }
 
-function expandShown(elCell, rowIdx, colIdx) {
-    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+function expandShown(elCell, rowIdx, colIdx, lastClick) {
+        for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
             if (j < 0 || j >= gBoard[0].length) continue
@@ -88,9 +88,19 @@ function expandShown(elCell, rowIdx, colIdx) {
             if (cell.isShown || cell.isMarked || cell.isMine) continue
             cell.isShown = true
             gGame.shownCount++
-            if (cell.minesAroundCount === 0) expandShown(elCell, i, j)
+            lastClick.push({ i: i, j: j })
+            if (cell.minesAroundCount === 0) expandShown(elCell, i, j, lastClick)
         }
     }
+    return lastClick
+}
+
+function hideCells(shownCells) {
+    for (var i = 0; i < shownCells.length; i++) {
+        var cell = gBoard[shownCells[i].i][shownCells[i].j]
+        cell.isShown = false
+    }
+    renderBoard(gBoard)
 }
 
 function cellHint(rowIdx, colIdx) {
@@ -107,14 +117,6 @@ function cellHint(rowIdx, colIdx) {
     }
     renderBoard(gBoard)
     return shownCells
-}
-
-function hideCells(shownCells) {
-    for (var i = 0; i < shownCells.length; i++) {
-        var cell = gBoard[shownCells[i].i][shownCells[i].j]
-        cell.isShown = false
-    }
-    renderBoard(gBoard)
 }
 
 function cellToDraw(board) {

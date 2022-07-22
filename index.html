@@ -12,7 +12,6 @@
 <body onload="init()">
   <h1>Mine Sweeper!!!</h1>
   <button class="sweeper" onclick="resetGame()">😁</button>
-  <!-- <br> <br> -->
   <div>
     <button class='hints' onclick="hint()">HINTS : <span class='hints'>💡💡💡</span></button>
     <span class='lives'>❤️❤️❤️</span>
@@ -31,6 +30,9 @@
   <button data-level="2" onclick="levelUpdate(this)">Level 3</button>
   <br><br>
   <button onclick="safeClick()">Safe Click: <span class='safe-click'>3</span></button>
+  <button onclick="manuallyGame()">Manually positioned mines</button>
+  <button onclick="undo()">UNDO</button>
+  <button onclick="sevenBoom()">7 BOOM!</button>
   <div class="footer">Inbal Moshe</div>
 
   <script src="js/util.js"></script>

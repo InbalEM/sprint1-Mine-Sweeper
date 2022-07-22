@@ -8,17 +8,17 @@ h1 {
     color: beige;
 }
 
-span.lives {
-    margin-right: 25px;
-}
 span.clock{
     margin: auto;
 }
 
 button.hints {
-    margin-right: 10px;
+    margin-left: 30px;
     background: none;
     color: aliceblue;
+}
+span.lives{
+    margin-right: 20px
 }
 
 .sweeper {

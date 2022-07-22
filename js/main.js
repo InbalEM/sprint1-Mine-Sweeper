@@ -26,11 +26,20 @@ var gIsHint = false
 
 var gSafeClickCount = 3
 
+var isManually = false
+var gManuallyMines = []
+
+var gLastClick = []
+
+var gIsSevenBoom = false
 
 function init() {
     gGame.isOn = true
     gBoard = buildBoard()
     renderBoard(gBoard)
+    if (gIsSevenBoom) {
+        addSevBoomMines()
+    }
 }
 
 function buildBoard() {
@@ -58,13 +67,18 @@ function setMinesNegsCount(board) {
 
 function cellClicked(elCell, idxI, idxJ) {
     if (!gGame.isOn) return
-
-    if (!gStartTime) {
+    if (!gStartTime && !isManually) {
         startTimer()
-        addMines(gBoard, idxI, idxJ)
+        if (!gIsSevenBoom){
+            addMines(gBoard, idxI, idxJ)
+        }
         gBoard = setMinesNegsCount(gBoard)
+    } else if (!gStartTime && isManually) {
+        gBoard[idxI][idxJ].isMine = true
+        renderCell(idxI, idxJ, MARKED, 'clicked')
+        gManuallyMines.push({ i: idxI, j: idxJ })
+        return
     }
-
     var cell = gBoard[idxI][idxJ]
 
     if (cell.isShown) return
@@ -75,11 +89,14 @@ function cellClicked(elCell, idxI, idxJ) {
         gIsHint = false
         return
     }
+    gLastClick = []
     if (cell.isMine) {
         mineClicked()
     } else if (cell.minesAroundCount === 0) {
-        expandShown(elCell, idxI, idxJ)
+        expandShown(elCell, idxI, idxJ, gLastClick)
     }
+    gLastClick.push({ i: idxI, j: idxJ })
+
     cell.isShown = true
     gGame.shownCount++
     renderBoard(gBoard)
@@ -112,16 +129,33 @@ function cellMarked(elCell) {
 }
 
 function addMines(board, idxI, IdxJ) {
-    var mines = []
     var cells = createArray(board.length, idxI, IdxJ)
     for (var i = 0; i < gLevels[gGameLevel].MINES; i++) {
         var ran = getRandomInt(0, cells.length)
         var mineCell = cells[ran]
         cells.splice(ran, 1)
         board[mineCell.i][mineCell.j].isMine = true
-        mines.push(mineCell)
     }
     return board
+}
+
+function addSevBoomMines() {
+    console.log('addSevBoomMines');
+    var count = 0
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard.length; j++) {
+            console.log('i,j:', i,j)
+            if (i === 0 && j === 0)continue
+            count++
+            console.log('count:', count)
+            if (count % 7 === 0 || count % 10 === 7) {
+                console.log('true:')
+                gBoard[i][j].isMine = true
+            }
+        }
+
+    }
+    console.log('addSevBoomMines');
 }
 
 function safeClick() {
@@ -140,6 +174,34 @@ function safeClick() {
         cell.isShown = false
         renderBoard(gBoard)
     }, "1000", cell)
+}
+
+function manuallyGame() {
+    if (gStartTime) return
+    if (!isManually) {
+        isManually = true
+        return
+    } else {
+        isManually = false
+        startTimer()
+    }
+    gBoard = setMinesNegsCount(gBoard)
+    hideCells(gManuallyMines)
+}
+
+function undo() {
+    if (gLastClick.length === 0) return
+    hideCells(gLastClick)
+    gGame.shownCount -= gLastClick.length
+    if (gBoard[gLastClick[0].i][gLastClick[0].j].isMine) {
+        gLives++
+        updateLives()
+    }
+}
+
+function sevenBoom() {
+    gIsSevenBoom = true
+    resetGame()
 }
 
 function setTimer() {
@@ -198,9 +260,9 @@ function scoreCountToLevel(storedTime, gameTime) {
 function checkGameOver() {
     var mineCount = gLevels[gGameLevel].MINES
     var flagCount = mineCount - (3 - gLives)
-    var shownCount = gLevels[gGameLevel].SIZE ** 2 - flagCount
+    var showsCount = gLevels[gGameLevel].SIZE ** 2 - flagCount
 
-    if (gGame.shownCount !== shownCount) return false
+    if (gGame.shownCount !== showsCount) return false
     if (gGame.markedCount !== flagCount) return false
 
     var elSweeper = document.querySelector('.sweeper')
@@ -284,6 +346,11 @@ function resetGame() {
     gSafeClickCount = 3
     var elSafeButton = document.querySelector('.safe-click')
     elSafeButton.innerHTML = gSafeClickCount
+
+    isManually = false
+    gManuallyMines = []
+
+    gLastClick = []
 
     init()
 }
