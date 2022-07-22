@@ -71,6 +71,7 @@ function cellClicked(elCell, idxI, idxJ) {
         startTimer()
         if (!gIsSevenBoom){
             addMines(gBoard, idxI, idxJ)
+            gIsSevenBoom = false
         }
         gBoard = setMinesNegsCount(gBoard)
     } else if (!gStartTime && isManually) {
@@ -122,6 +123,7 @@ function cellMarked(elCell) {
         if (cell.isMine) gGame.markedCount++
     }
     renderBoard(gBoard)
+
     if (checkGameOver()) {
         gGame.isOn = false
         return
