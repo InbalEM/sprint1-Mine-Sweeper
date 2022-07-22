@@ -39,7 +39,7 @@ function init() {
     renderBoard(gBoard)
     if (gIsSevenBoom) {
         addSevBoomMines()
-        gIsSevenBoom = false
+        
     }
 }
 
@@ -72,6 +72,8 @@ function cellClicked(elCell, idxI, idxJ) {
         startTimer()
         if (!gIsSevenBoom){
             addMines(gBoard, idxI, idxJ)
+        }else {
+            gIsSevenBoom = false
         }
         gBoard = setMinesNegsCount(gBoard)
     } else if (!gStartTime && isManually) {
@@ -145,9 +147,12 @@ function addSevBoomMines() {
     var count = 0
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
+            console.log('i , j:', i , j)
             if (i === 0 && j === 0)continue
             count++
+            console.log('count:', count)
             if (count % 7 === 0 || count % 10 === 7) {
+                console.log('true');
                 gBoard[i][j].isMine = true
             }
         }
